@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.controller.LoginController">
+    <padding>
+        <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+    </padding>
+
+    <Label text="Mzansi Feast Login">
+        <font>
+            <Font name="System Bold" size="22.0" />
+        </font>
+    </Label>
+
+    <TextField fx:id="txtEmail" promptText="Email Address" prefWidth="260.0" />
+    <PasswordField fx:id="txtPassword" promptText="Password" prefWidth="260.0" />
+
+    <Button text="Login" onAction="#handleLogin" prefWidth="260.0" style="-fx-background-color: #2c3e50; -fx-text-fill: white; -fx-font-weight: bold;" />
+
+    <Label fx:id="lblStatus" textFill="RED" />
+</VBox>
