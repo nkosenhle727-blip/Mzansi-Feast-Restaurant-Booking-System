@@ -1,21 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.controller.DashboardController">
+<VBox prefHeight="750.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.restaurant.controller.DashboardController">
     <padding>
-        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
 
-    <Label fx:id="lblWelcome" text="Welcome to Mzansi Feast Dashboard">
-        <font>
-            <Font name="System Bold" size="20.0" />
-        </font>
-    </Label>
+    <!-- Header Bar -->
+    <HBox alignment="CENTER_LEFT" spacing="20.0" style="-fx-background-color: #2c3e50; -fx-padding: 12;">
+        <Label text="Mzansi Feast System" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblWelcome" text="Welcome, User!" textFill="WHITE" />
+        <Button onAction="#handleLogout" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" text="Logout" />
+    </HBox>
 
-    <Button text="Logout" onAction="#handleLogout" prefWidth="150.0" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold;" />
+    <TabPane fx:id="tabPane" prefHeight="650.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+
+        <!-- TAB 1: Table Reservation -->
+        <Tab text="Book a Table">
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 0;">
+                <VBox spacing="12.0">
+                    <padding><Insets top="15.0" right="15.0" bottom="15.0" left="15.0"/></padding>
+                    <Label text="New Table Reservation" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+
+                    <GridPane hgap="10.0" vgap="10.0">
+                        <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <DatePicker fx:id="dpDate" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                        <Label text="Time (HH:MM):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <ComboBox fx:id="cmbTime" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                        <Label text="Party Size:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <Spinner fx:id="spnPartySize" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                        <Label text="Table Number:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <ComboBox fx:id="cmbTable" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                    </GridPane>
+
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Button text="Confirm Reservation" onAction="#handleMakeReservation" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                        <Label fx:id="lblBookingStatus" textFill="BLUE" style="-fx-font-weight: bold;"/>
+                    </HBox>
+
+                    <!-- Recommendation Container -->
+                    <VBox fx:id="vboxRecommendations" visible="false" managed="false" spacing="8.0" style="-fx-background-color: #fff3cd; -fx-padding: 12; -fx-border-color: #ffebaa; -fx-border-radius: 5;">
+                        <Label text="Notice: Requested slot is occupied! Recommended alternative available times:" style="-fx-text-fill: #856404; -fx-font-weight: bold;"/>
+                        <HBox fx:id="hboxSuggestedSlots" spacing="10.0" alignment="CENTER_LEFT"/>
+                    </VBox>
+
+                    <Separator/>
+
+                    <HBox alignment="CENTER_LEFT" spacing="15.0">
+                        <Label text="Your Active Bookings" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="Cancel Selected Reservation" onAction="#handleCancelReservation" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 6 12;"/>
+                    </HBox>
+
+                    <TableView fx:id="tblReservations" prefHeight="200.0">
+                        <columns>
+                            <TableColumn fx:id="colTable" text="Table #" prefWidth="100.0"/>
+                            <TableColumn fx:id="colDate" text="Date" prefWidth="150.0"/>
+                            <TableColumn fx:id="colTime" text="Time" prefWidth="120.0"/>
+                            <TableColumn fx:id="colParty" text="Party Size" prefWidth="100.0"/>
+                            <TableColumn fx:id="colStatus" text="Status" prefWidth="150.0"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+
+        <!-- TAB 2: Digital Menu & Ordering -->
+        <Tab text="Digital Menu &amp; Ordering">
+            <HBox spacing="15.0">
+                <padding><Insets top="15.0" right="15.0" bottom="15.0" left="15.0"/></padding>
+
+                <!-- Left Column: Menu Items -->
+                <VBox spacing="10.0" prefWidth="420.0" HBox.hgrow="ALWAYS">
+                    <Label text="Select Items" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+                    <ListView fx:id="listMenu" prefHeight="380.0"/>
+                    <HBox spacing="10.0" alignment="CENTER_LEFT">
+                        <Label text="Qty:"/>
+                        <Spinner fx:id="spnOrderQty" prefWidth="80.0"/>
+                        <Button text="Add to Order Cart" onAction="#handleAddToCart" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    </HBox>
+                </VBox>
+
+                <Separator orientation="VERTICAL"/>
+
+                <!-- Right Column: Cart & Bill Calculation -->
+                <VBox spacing="10.0" prefWidth="420.0" HBox.hgrow="ALWAYS">
+                    <Label text="Current Order Cart" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+                    <TableView fx:id="tblCart" prefHeight="320.0">
+                        <columns>
+                            <TableColumn fx:id="colCartItem" text="Item Name" prefWidth="160.0"/>
+                            <TableColumn fx:id="colCartQty" text="Qty" prefWidth="60.0"/>
+                            <TableColumn fx:id="colCartUnitPrice" text="Unit (R)" prefWidth="80.0"/>
+                            <TableColumn fx:id="colCartSubtotal" text="Subtotal (R)" prefWidth="90.0"/>
+                        </columns>
+                    </TableView>
+
+                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                        <Label text="Total Bill:" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+                        <Label fx:id="lblTotalBill" text="R0.00" style="-fx-font-weight: bold; -fx-font-size: 18px; -fx-text-fill: #27ae60;"/>
+                    </HBox>
+
+                    <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                        <Button text="Remove Item" onAction="#handleRemoveFromCart" style="-fx-background-color: #e67e22; -fx-text-fill: white;"/>
+                        <Button text="Place Order &amp; Generate Bill" onAction="#handleCheckout" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    </HBox>
+                    <Label fx:id="lblCartStatus" textFill="BLUE" style="-fx-font-weight: bold;"/>
+                </VBox>
+            </HBox>
+        </Tab>
+
+        <!-- TAB 3: Admin Panel (Visible for Managers / Admins) -->
+        <Tab fx:id="tabAdmin" text="Admin &amp; Daily Sales">
+            <VBox spacing="15.0">
+                <padding><Insets top="15.0" right="15.0" bottom="15.0" left="15.0"/></padding>
+                <Label text="Daily Sales &amp; Audit Report" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+
+                <HBox spacing="15.0" alignment="CENTER_LEFT">
+                    <Label text="Select Operating Date:"/>
+                    <DatePicker fx:id="dpAuditDate" onAction="#handleLoadDailySales"/>
+                    <Button text="Refresh Audit" onAction="#handleLoadDailySales" style="-fx-background-color: #34495e; -fx-text-fill: white;"/>
+                </HBox>
+
+                <!-- Metric Summary Box -->
+                <HBox spacing="20.0" style="-fx-background-color: #ecf0f1; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-radius: 5;">
+                    <VBox spacing="5.0">
+                        <Label text="Total Gross Daily Revenue" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
+                        <Label fx:id="lblDailyGrossRevenue" text="R0.00" style="-fx-font-weight: bold; -fx-font-size: 22px; -fx-text-fill: #27ae60;"/>
+                    </VBox>
+                    <Separator orientation="VERTICAL"/>
+                    <VBox spacing="5.0">
+                        <Label text="Processed Bills Count" style="-fx-font-weight: bold; -fx-text-fill: #7f8c8d;"/>
+                        <Label fx:id="lblBillCount" text="0" style="-fx-font-weight: bold; -fx-font-size: 22px; -fx-text-fill: #2980b9;"/>
+                    </VBox>
+                </HBox>
+
+                <Label text="Audit Transactions Log" style="-fx-font-weight: bold;"/>
+                <TableView fx:id="tblBillsAudit" prefHeight="250.0">
+                    <columns>
+                        <TableColumn fx:id="colBillId" text="Bill ID" prefWidth="90.0"/>
+                        <TableColumn fx:id="colBillOrder" text="Order ID" prefWidth="100.0"/>
+                        <TableColumn fx:id="colBillUser" text="User ID" prefWidth="100.0"/>
+                        <TableColumn fx:id="colBillDate" text="Date" prefWidth="150.0"/>
+                        <TableColumn fx:id="colBillTotal" text="Total Amount (R)" prefWidth="150.0"/>
+                        <TableColumn fx:id="colBillStatus" text="Payment Status" prefWidth="140.0"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+    </TabPane>
 </VBox>

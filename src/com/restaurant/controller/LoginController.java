@@ -35,11 +35,11 @@ public class LoginController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/restaurant/view/dashboard.fxml"));
                 Parent root = loader.load();
 
-                DashboardController dashboardController = loader.getController();
-                dashboardController.initData(user);
+                DashboardController controller = loader.getController();
+                controller.initData(user);
 
                 Stage stage = (Stage) txtEmail.getScene().getWindow();
-                stage.setScene(new Scene(root, 600, 400));
+                stage.setScene(new Scene(root, 850, 720));
                 stage.centerOnScreen();
             } catch (Exception e) {
                 e.printStackTrace();
