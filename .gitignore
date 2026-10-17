@@ -1,29 +1,5 @@
-### IntelliJ IDEA ###
-.idea/
-*.iml
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-.kotlin
-
-### Java & Build Output ###
-*.class
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### VS Code ###
-.vscode/
-
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### Operating System ###
-.DS_Store
-Thumbs.db
+.idea/  
+target/  
+out/  
+*.class  
+*.iml 
